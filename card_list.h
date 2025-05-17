@@ -73,8 +73,11 @@ class CardBST::iterator {
         Node* operator->() const { return curr; }
 
         iterator& operator++() {
+            if (curr) {
             curr = tree->getSuccessorNode(curr->card);
+            }
             return *this;
+
         }
         iterator& operator--(){
             curr = tree->getPredecessorNode(curr->card);

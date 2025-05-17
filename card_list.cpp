@@ -1,5 +1,5 @@
 // card_list.cpp
-// Author: Your name
+// Author: Krisha Soneji
 // Implementation of the classes defined in card_list.h
 #include "card_list.h"
 #include "card.h"
@@ -310,54 +310,48 @@ CardBST::iterator CardBST:: begin(){
 }
 
 CardBST::iterator CardBST:: end(){
-    return iterator(findMax(),this);
+    return iterator(nullptr,this);
 }
 
 CardBST::iterator CardBST:: rend(){
-    return iterator(findMin(),this);
+    return iterator(nullptr,this);
 }
 
 CardBST::iterator CardBST:: rbegin(){
     return iterator(findMax(),this);
 }
-void playGame(CardBST& alice, CardBST& bob){
+void playGame(CardBST& alice, CardBST& bob) {
+    bool aliceTurn = true; 
     bool matchFound = true;
     
     while (matchFound) {
         matchFound = false;
+        if (aliceTurn) {
+            for (auto it = alice.begin(); it != alice.end(); ++it) {
+                if (bob.contains(it->card)) {
+                    Card match = it->card;
+                    cout << "Alice picked matching card " << match << endl;
+                    alice.remove(match);
+                    bob.remove(match);
+                    matchFound = true;
+                    break; 
+                }
+            }
+        } else {
+            for (auto rit = bob.rbegin(); rit != bob.rend(); --rit) {
 
-        for (auto it = alice.begin(); it != alice.end();++it) {
-            Card valueToRemove = it->card;
-            if (bob.contains(it->card)) {
-                cout << "Alice picked matching card " << it->card << endl;
-          
-
-                bob.remove(valueToRemove);
-                alice.remove(valueToRemove);
-                
-                matchFound = true;
-                break;
+                if (alice.contains(rit->card)) {
+                    Card match = rit->card;
+                    cout << "Bob picked matching card " << match << endl;
+                    alice.remove(match);
+                    bob.remove(match);
+                    matchFound = true;
+                    break; 
+                }
             }
         }
-        
-        if (!matchFound) break;
-        matchFound = false;
-    
-        for (auto rit = bob.rbegin(); rit != bob.rend();++rit) {
-            Card valueToRemove = rit->card;
-            if (valueToRemove == bob.rbegin()->card) {
-                bob.rbegin() = ++rit;
-            }
-            if (alice.contains(rit->card)) {
-                cout << "Bob picked matching card " << rit->card << endl;
-            
-                
-                alice.remove(valueToRemove);
-                bob.remove(valueToRemove);
-                
-                matchFound = true;
-                break;
-            }
+        if (matchFound) {
+            aliceTurn = !aliceTurn;
         }
     }
 }

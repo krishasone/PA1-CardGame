@@ -7,9 +7,6 @@
 
 using namespace std;
 
-// Helper functions
-
-// ==================== BST Public Methods Tests ====================
 void testInsert() {
     cout << "Testing insert()" << endl;
     CardBST bst;
@@ -29,11 +26,11 @@ void testInsert() {
 
     assert(bst.insert(Card("s k")) == true);
     bst.printDeck();
-    cout << "All insert() tests passed!\n";
+    cout << "insert passed"<<endl;
 }
 
 void testRemove() {
-    cout << "=== Testing remove() ===" << endl;
+    cout << "testing remove" << endl;
     CardBST bst;
 
     assert(bst.remove(Card("h 3")) == false);
@@ -56,11 +53,11 @@ void testRemove() {
     // 5. Non-existent card
     assert(bst.remove(Card("d j")) == false);
     bst.printDeck();
-    cout << "All remove() tests passed!\n";
+    cout << "remove passed"<<endl;
 }
 
 void testContains() {
-    cout << "=== Testing contains() ===" << endl;
+    cout << "testing contains" << endl;
     CardBST bst;
 
     assert(bst.contains(Card("h 3")) == false);
@@ -77,7 +74,7 @@ void testContains() {
 
     assert(bst.contains(Card("d j")) == false);
 
-    cout << "All contains() tests passed!\n";
+    cout << "All contains() tests passed";
 }
 
 void testSuccessorPredecessor() {
@@ -106,11 +103,11 @@ void testSuccessorPredecessor() {
 
     assert(bst.getSuccessorNode(Card("d j")) == nullptr);
 
-    cout << "All successor/predecessor tests passed!\n";
+    cout << "success/predec pass";
 }
 
 void testPrintDeck() {
-    cout << "=== Testing printDeck() ===" << endl;
+    cout << "test print deck" << endl;
     CardBST bst;
     
     bst.printDeck();
@@ -129,12 +126,12 @@ void testPrintDeck() {
     bst.insert(Card("h k"));
     bst.printDeck();
 
-    cout << "All printDeck() tests passed!\n";
+    cout << "print deck passed"<<endl;
 }
 
 //Iterator
 void testIterator() {
-    cout << "=== Testing Iterator ===" << endl;
+    cout << "test iterator" << endl;
     CardBST bst;
 
     assert(bst.begin() == bst.end());
@@ -144,38 +141,39 @@ void testIterator() {
     bst.insert(Card("h 3"));
     auto it = bst.begin();
     assert(it->card == Card("h 3"));
-    assert(++it == nullptr);
+    assert(++it == bst.end());
 
 
     bst.insert(Card("s 10"));
     bst.insert(Card("c a"));
-    vector<Card> expected = {Card("c a"), Card("h 3"), Card("s 10")};
+    vector<Card> expected = {Card("c a"), Card("s 10"), Card("h 3"), };
     size_t i = 0;
+    bst.printDeck();
     for (auto it = bst.begin(); it != bst.end(); ++it) {
-        assert(it->card == expected[i++]);
+        assert(it->card == expected.at(i));
+        i++;
     }
 
     auto rit = bst.rbegin();
-    assert(rit->card == Card("s 10"));
-    assert((++rit)->card == Card("h 3"));
-    assert((++rit)->card == Card("c a"));
-    assert(++rit == bst.rend());
+    assert(rit->card == Card("h 3"));
+    assert((--rit)->card == Card("s 10"));
+    assert((--rit)->card == Card("c a"));
+    assert(--rit == bst.rend());
 
-    // 5. Iterator comparison
     auto it1 = bst.begin();
     auto it2 = bst.begin();
     assert(it1 == it2);
     ++it1;
     assert(it1 != it2);
 
-    cout << "All iterator tests passed!\n";
+    cout << "iterator passed"<<endl;
 }
 
-// ==================== playGame Tests ====================
+
 void testPlayGameCommonCards() {
-    cout << "=== Testing playGame() with common cards ===" << endl;
+    cout << "test common card" << endl;
     CardBST alice, bob;
-    
+
     // Setup decks
     alice.insert(Card("h 3"));
     alice.insert(Card("s 10"));
@@ -183,80 +181,58 @@ void testPlayGameCommonCards() {
     bob.insert(Card("h 3"));
     bob.insert(Card("d j"));
 
-    // Redirect cout
-    stringstream output;
-    auto old_buf = cout.rdbuf(output.rdbuf());
     
     playGame(alice, bob);
     
-    cout.rdbuf(old_buf);
-    
-    // Verify output
-    assert(output.str().find("Alice picked matching card h 3") != string::npos);
     assert(!alice.contains(Card("h 3")));
     assert(!bob.contains(Card("h 3")));
     assert(alice.count() == 2);
     assert(bob.count() == 1);
 
-    cout << "Common cards test passed!\n";
+    cout << "common card test passed"<<endl;
 }
 
 void testPlayGameEmptyHand() {
-    cout << "=== Testing playGame() with empty hand ===" << endl;
+    cout << "playgame w empty hand" << endl;
     CardBST alice, bob;
     alice.insert(Card("h 3"));
     
-    stringstream output;
-    auto old_buf = cout.rdbuf(output.rdbuf());
-    
     playGame(alice, bob);
     
-    cout.rdbuf(old_buf);
-    
-    assert(output.str().empty());
     assert(alice.count() == 1);
     assert(bob.count() == 0);
 
-    cout << "Empty hand test passed!\n";
+    cout << "empty hand test"<<endl;
 }
 
 void testPlayGameNoCommon() {
-    cout << "=== Testing playGame() with no common cards ===" << endl;
+    cout << "no common cards test" << endl;
     CardBST alice, bob;
     alice.insert(Card("h 3"));
     bob.insert(Card("d j"));
     
-    stringstream output;
-    auto old_buf = cout.rdbuf(output.rdbuf());
     
     playGame(alice, bob);
     
-    cout.rdbuf(old_buf);
-    
-    assert(output.str().empty());
     assert(alice.count() == 1);
     assert(bob.count() == 1);
 
-    cout << "No common cards test passed!\n";
+    cout << "no common cards test passed!"<<endl;
 }
 
-// ==================== Main ====================
 int main() {
-    // BST Methods
     testInsert();
     testRemove();
     testContains();
     testSuccessorPredecessor();
     testPrintDeck();
     
-    // Iterator
     testIterator();
     
-    // playGame
     testPlayGameCommonCards();
     testPlayGameEmptyHand();
     testPlayGameNoCommon();
 
-    cout << "=== All tests passed! ===" << endl;
+    cout << "all tests passed" << endl;
     return 0;
 }

@@ -19,6 +19,7 @@ void game(set<Card>& a, set<Card>& b){
       if (b.find(*it)!=b.end()){
         cout<<"Alice picked matching card "<<it->getSuit()<<" "<<it->getValue()<<endl;
         b.erase(*it);
+        
         it = a.erase(it);
         matchFound = true;
         break;
