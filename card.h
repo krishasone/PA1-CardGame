@@ -9,6 +9,7 @@ using namespace std;
 class Card {
     public:
         Card(string c);
+        Card(const std::string& suit, const std::string& value);
         string getSuit() const;
         string getValue() const;
         bool operator<(const Card& other) const;

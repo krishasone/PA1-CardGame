@@ -18,6 +18,7 @@ Card::Card(string c) {
         value = c.substr(2,4);
     }
 }
+
 string Card::getSuit() const{
     return suit;
 }
@@ -26,7 +27,7 @@ string Card::getValue() const{
 }
 bool Card::operator<(const Card& other) const{
     string suitOrder = "cdsh";
-    string valueOrder = "a1234567891jqk";
+    string valueOrder = "a234567891jqk";
 
     int thisSuit = suitOrder.find(suit);
     int otherSuit = suitOrder.find(other.suit);
@@ -35,14 +36,10 @@ bool Card::operator<(const Card& other) const{
         return thisSuit < otherSuit;
     }
 
-    if (value == "10" && other.value == "10") return false;
-    if (value == "10") return false;
-    if (other.value == "10") return true;
+    string thisVal = (value == "10") ? "1" : value;
+    string otherVal = (other.value == "10") ? "1" : other.value;
     
-    int thisVal = valueOrder.find(value);
-    int otherVal = valueOrder.find(other.value);
-    
-    return thisVal < otherVal;
+    return valueOrder.find(thisVal) < valueOrder.find(otherVal);
 }
 bool Card::operator== (const Card& other) const{
     return suit == other.suit && value == other.value;

@@ -9,6 +9,8 @@
 using namespace std;
 
 int main(int argv, char** argc){
+  CardBST a;
+  CardBST b;
   if(argv < 3){
     cout << "Please provide 2 file names" << endl;
     return 1;
@@ -25,16 +27,24 @@ int main(int argv, char** argc){
 
   //Read each file
   while (getline (cardFile1, line) && (line.length() > 0)){
-
+    a.insert(Card(line));
   }
   cardFile1.close();
 
 
   while (getline (cardFile2, line) && (line.length() > 0)){
+    b.insert(Card(line));
 
   }
   cardFile2.close();
   
-  
+  playGame(a,b);
+  cout<<endl;
+  cout<<"Alice's cards:"<<endl;
+  a.printDeck();
+  cout<<endl;
+  cout<<"Bob's cards:"<<endl;
+  b.printDeck();
+
   return 0;
 }
